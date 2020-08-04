@@ -20,11 +20,11 @@ namespace TCPIPLibrary.MyClient
             Fio = fio;
             IP = iP;
         }
-        public bool Connect(int port)
+        public bool Connect(IPAddress ip,int port)
         {
             try 
             {
-                IPEndPoint ipEndPoint = new IPEndPoint(IP, port);
+                IPEndPoint ipEndPoint = new IPEndPoint(ip, port);
                 socket.Connect(ipEndPoint);
                 return true;
             }
@@ -53,13 +53,14 @@ namespace TCPIPLibrary.MyClient
             {
                 if (socket.IsBound)
                 {
-                    byte[] bytes = Encoding.UTF8.GetBytes(message);
+                    string newmessage = Fio + ":" + message;
+                    byte[] bytes = Encoding.UTF8.GetBytes(newmessage);
                     socket.Send(bytes);
-                    message.ToLower();
-                    if (message != "конец" || message != "зе енд" || message != "konec" || message != "the end")
-                    {
-                        Disconnect();
-                    }
+                    //message.ToLower();
+                    //if (message == "конец" || message == "зе енд" || message == "konec" || message == "the end")
+                    //{
+                    //    Disconnect();
+                    //}
                 }
                 else
                     throw new Exception();
@@ -70,16 +71,26 @@ namespace TCPIPLibrary.MyClient
                 return false;
             }
         }
-        public event EventHandler<EventArgs> RecievedMessageFromServer = (object sender, EventArgs eventArgs) =>
+        public bool ReciveMessage()
         {
-            Client client = (Client)sender;
-            if (client.socket.IsBound)
+            try
             {
-                string message = "";
-                byte[] bytes = new byte[256];
-                int resBytes = client.socket.Receive(bytes);
-                message = Encoding.UTF8.GetString(bytes,0,resBytes);
+                if (socket.IsBound)
+                {
+                    string message = "";
+                    byte[] bytes = new byte[256];
+                    int resBytes = socket.Receive(bytes);
+                    message = Encoding.UTF8.GetString(bytes, 0, resBytes);
+                    RecievedMessageFromServer?.Invoke(this,message);
+                }
+                return true;
             }
-        };
+            catch
+            {
+                return false;
+            }
+        }
+        public delegate void MyEventHandler(object sender, string message);
+        public event MyEventHandler RecievedMessageFromServer;
     }
 }

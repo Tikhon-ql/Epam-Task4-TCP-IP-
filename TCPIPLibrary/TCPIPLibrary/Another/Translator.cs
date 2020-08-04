@@ -9,7 +9,8 @@ namespace TCPIPLibrary.Another
 {
     public static class Translator
     {
-        //A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+        static string rusAlf = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+        //static string engAlf = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         static Dictionary<string, string> translator = new Dictionary<string, string>();
         static Translator()
         {
@@ -83,15 +84,10 @@ namespace TCPIPLibrary.Another
         public static string Translate(string str)
         {
             string result = str;
-            //false - russian
-            //true - translete
-            bool flag = false;
-            if (str.Contains(translator["ж"]) || str.Contains(translator["Ж"]))
-                flag = true;
-
+            int i = 0;
             foreach (KeyValuePair<string, string> item in translator) 
             {
-                if (flag)
+                if (rusAlf.Contains(result[i].ToString()))
                     result = result.Replace(item.Key, item.Value);
                 else
                     result = result.Replace(item.Value, item.Key);

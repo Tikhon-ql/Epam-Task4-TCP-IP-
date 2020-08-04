@@ -17,8 +17,7 @@ namespace TCPIPLibrary.MyServer
         public IPAddress Ip { get; private set; }
 
         Socket listner = new Socket(SocketType.Stream,ProtocolType.Tcp);
-        public List<string> reciveMessages = new List<string>();
-        public List<string> sendMessages = new List<string>();
+        MessageList messageList = new MessageList();
 
         public Server(IPAddress ip,int port,int backlog = 1)
         {
@@ -26,35 +25,42 @@ namespace TCPIPLibrary.MyServer
             listner.Bind(ipEndPoint);
             listner.Listen(backlog);
         }
-        public event EventHandler<EventArgs> RecivedMessageFromClient = delegate (object sender, EventArgs eventArgs)
+        public bool ReciveMessage()
         {
             try
             {
-                Server server = (Server)sender;
-                Socket handler = server.listner.Accept();
+                Socket handler = listner.Accept();
+
                 string message = "";
                 byte[] bytes = new byte[256];
                 int bytRes = handler.Receive(bytes);
                 message = Encoding.UTF8.GetString(bytes, 0, bytRes);
-                server.reciveMessages.Add(message);
-                string result = Translator.Translate(message);
+
+                string[] strs = message.Split(':');
+                messageList.Add(strs[0], strs[1]);
+
+                string result = Translator.Translate(strs[1]);
                 bytes = Encoding.UTF8.GetBytes(result);
-                message.ToLower();
-                if (message != "конец" || message != "зе енд" || message != "konec" || message != "the end")
+
+                strs[1].ToLower();
+                if (strs[1] != "конец" || strs[1] != "зе енд" || strs[1] != "konec" || strs[1] != "the end")
                 {
                     handler.Send(bytes);
-                    server.sendMessages.Add(result);
                 }
                 else
                 {
                     handler.Shutdown(SocketShutdown.Both);
                     handler.Close();
                 }
+                RecivedMessageFromClient?.Invoke(this, result);
+                return true;
             }
             catch
             {
-                throw new Exception();
+                return false;
             }
-        };
+        }
+        public delegate void MyEventHandler(object sender, string message);
+        public event MyEventHandler RecivedMessageFromClient;
     }
 }

@@ -41,12 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Another\MessageList.cs" />
     <Compile Include="Another\Translator.cs" />
     <Compile Include="MyClient\Client.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyServer\Server.cs" />
-    <Compile Include="Subscribers\ClientSubscraibers\ClientSubscraiber.cs" />
-    <Compile Include="Subscribers\ServerSubscraibers\ServerSubscruiber.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
