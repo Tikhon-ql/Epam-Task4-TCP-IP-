@@ -1,0 +1,6 @@
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TranslatorLibrary\bin\Debug\TranslatorLibrary.dll
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TranslatorLibrary\bin\Debug\TranslatorLibrary.pdb
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TranslatorLibrary\obj\Debug\TranslatorLibrary.csprojAssemblyReference.cache
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TranslatorLibrary\obj\Debug\TranslatorLibrary.csproj.CoreCompileInputs.cache
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TranslatorLibrary\obj\Debug\TranslatorLibrary.dll
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TranslatorLibrary\obj\Debug\TranslatorLibrary.pdb

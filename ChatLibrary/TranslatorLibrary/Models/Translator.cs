@@ -81,16 +81,16 @@ namespace TranslatorLibrary.Models
         }
         public static string Translate(string message)
         {
-            string translateMessage = message;
+            StringBuilder translateMessage = new StringBuilder(message);
             int i = 0;
             foreach (KeyValuePair<char, string> item in rusToEng)
             {
                 if ((translateMessage[i] > 'a' && translateMessage[i] < 'z') || (translateMessage[i] > 'A' && translateMessage[i] < 'Z'))
-                    translateMessage = translateMessage.Replace(item.Value, item.Key.ToString());
+                    translateMessage.Replace(item.Value, item.Key.ToString());
                 else
-                    translateMessage = translateMessage.Replace(item.Key.ToString(), item.Value);
+                    translateMessage.Replace(item.Key.ToString(), item.Value);
             }
-            return translateMessage;
+            return translateMessage.ToString();
         }
     }
 }

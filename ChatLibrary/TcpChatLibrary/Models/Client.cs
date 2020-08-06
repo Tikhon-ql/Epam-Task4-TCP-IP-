@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TcpChatLibrary.Models
@@ -23,29 +27,6 @@ namespace TcpChatLibrary.Models
             Ip = iP;
         }
 
-        //public string GetMessage()
-        //{
-        //    if (stream != null)
-        //    {
-        //        byte[] bytes = new byte[1024];
-        //        string message = "";
-        //        while (stream.DataAvailable)
-        //        {
-        //            int byteCount = stream.Read(bytes, 0, bytes.Length);
-        //            message += Encoding.Unicode.GetString(bytes, 0, byteCount);
-        //        }
-        //        return message;
-        //    }
-        //    else
-        //        throw new NullReferenceException();
-        //}
-        //public void Close()
-        //{
-        //    if (stream != null)
-        //        stream.Close();
-        //    if (client != null)
-        //        client.Close();
-        //}
         public bool Connect(IPAddress ip, int port)
         {
             try
@@ -54,7 +35,7 @@ namespace TcpChatLibrary.Models
                 Thread reciveMessageThread = new Thread(ReciveMessage);
                 Thread joiningThread = new Thread(Joining);
                 reciveMessageThread.Start();
-
+                joiningThread.Start();
                 return true;
             }
             catch
@@ -64,27 +45,32 @@ namespace TcpChatLibrary.Models
         }
         public void Joining()
         {
-            string message = Name;
+            string message = "";
             while (true)
             {
                 SendMessage(message);
             }
         }
-        public void ReciveMessage()
+        private void ReciveMessage()
         {
-            if (stream != null)
+            while (true)
             {
-                byte[] data = new byte[1024];
-                int bytCount = stream.Read(data, 0, data.Length);
-                string message = Encoding.Unicode.GetString(data, 0, bytCount);
-                RecivedMessageFromServer?.Invoke(this, message);
+                StringBuilder builder = new StringBuilder();
+                byte[] bytes = new byte[1024];
+                do
+                {
+                    int byteCount = stream.Read(bytes, 0, bytes.Length);
+                    builder.Append(Encoding.Unicode.GetString(bytes, 0, byteCount));
+                }
+                while (stream.DataAvailable);
+                RecivedMessageFromServer?.Invoke(this,builder.ToString());
             }
-            else
-                throw new NullReferenceException();
         }
         private void SendMessage(string message)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(message);
+            stream = client.GetStream();
             stream.Write(bytes, 0, bytes.Length);
         }
     }
+}
