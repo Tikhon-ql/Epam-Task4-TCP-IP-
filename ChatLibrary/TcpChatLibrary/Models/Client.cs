@@ -55,15 +55,18 @@ namespace TcpChatLibrary.Models
         {
             while (true)
             {
-                StringBuilder builder = new StringBuilder();
-                byte[] bytes = new byte[1024];
-                do
+                if(stream != null)
                 {
-                    int byteCount = stream.Read(bytes, 0, bytes.Length);
-                    builder.Append(Encoding.Unicode.GetString(bytes, 0, byteCount));
+                    StringBuilder builder = new StringBuilder();
+                    byte[] bytes = new byte[1024];
+                    do
+                    {
+                        int byteCount = stream.Read(bytes, 0, bytes.Length);
+                        builder.Append(Encoding.Unicode.GetString(bytes, 0, byteCount));
+                    }
+                    while (stream.DataAvailable);
+                    RecivedMessageFromServer?.Invoke(this, builder.ToString());
                 }
-                while (stream.DataAvailable);
-                RecivedMessageFromServer?.Invoke(this,builder.ToString());
             }
         }
         private void SendMessage(string message)

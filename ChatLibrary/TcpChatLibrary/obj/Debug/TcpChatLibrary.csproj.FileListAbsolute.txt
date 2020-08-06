@@ -1,0 +1,6 @@
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TcpChatLibrary\bin\Debug\TcpChatLibrary.dll
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TcpChatLibrary\bin\Debug\TcpChatLibrary.pdb
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TcpChatLibrary\obj\Debug\TcpChatLibrary.csprojAssemblyReference.cache
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TcpChatLibrary\obj\Debug\TcpChatLibrary.csproj.CoreCompileInputs.cache
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TcpChatLibrary\obj\Debug\TcpChatLibrary.dll
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\TcpChatLibrary\obj\Debug\TcpChatLibrary.pdb

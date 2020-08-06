@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace TcpChatLibrary.Models
 {
-    class Server
+    public class Server
     {
         List<TcpClient> connectedClients = new List<TcpClient>();
 
