@@ -7,6 +7,11 @@ namespace _Translator.Tests
     [TestClass]
     public class _TranslatorUnitTests
     {
+        /// <summary>
+        /// Check translate one word to another
+        /// </summary>
+        /// <param name="str">Stirng to translate</param>
+        /// <param name="expected">Expected string</param>
         [TestMethod]
         [DataRow("При вет", "Pri vet")]
         [DataRow("Хлеб.  ", "Hleb.  ")]

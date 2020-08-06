@@ -8,10 +8,13 @@ namespace TranslatorLibrary.Models
 {
     public static class Translator
     {
+        /// <summary>
+        /// Dictionary to translate one word to another
+        /// </summary>
         static Dictionary<char, string> rusToEng = new Dictionary<char, string>();
-        //static Dictionary<char, char> engToRus;
         static Translator()
         {
+            //Filling dictionary
             rusToEng.Add('а', "a");
             rusToEng.Add('б', "b");
             rusToEng.Add('в', "v");
@@ -79,6 +82,11 @@ namespace TranslatorLibrary.Models
             rusToEng.Add('Ю', "Yu");
             rusToEng.Add('Я', "Ya");
         }
+        /// <summary>
+        /// Translate one word to another method
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static string Translate(string message)
         {
             StringBuilder translateMessage = new StringBuilder(message);

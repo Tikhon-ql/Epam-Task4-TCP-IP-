@@ -1,0 +1,6 @@
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\MessageListLibrary\bin\Debug\MessageListLibrary.dll
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\MessageListLibrary\bin\Debug\MessageListLibrary.pdb
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\MessageListLibrary\obj\Debug\MessageListLibrary.csprojAssemblyReference.cache
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\MessageListLibrary\obj\Debug\MessageListLibrary.csproj.CoreCompileInputs.cache
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\MessageListLibrary\obj\Debug\MessageListLibrary.dll
+D:\Тихон\Git\Epam-Task4-TCP-IP-\ChatLibrary\MessageListLibrary\obj\Debug\MessageListLibrary.pdb

@@ -12,14 +12,21 @@ namespace TcpChatLibrary.Models
 {
     public class Server
     {
+        /// <summary>
+        /// List of conected clients
+        /// </summary>
         List<TcpClient> connectedClients = new List<TcpClient>();
 
         TcpListener listner = null;
         NetworkStream stream = null;
         public IPAddress Ip { get;private set; }
         public int Port { get; private set; }
-     
-        public delegate string MyEventHandler(object sender, string message);
+        /// <summary>
+        /// Message recived message event
+        /// </summary>
+        /// <param name="sender">Sender of message</param>
+        /// <param name="message">Message</param>
+        public delegate void MyEventHandler(object sender, string message);
         public event MyEventHandler RecivedMessageFromClient;
 
         public Server(IPAddress ip, int port)
@@ -31,12 +38,18 @@ namespace TcpChatLibrary.Models
             Thread listenThread = new Thread(StartListen);
             listenThread.Start();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="client"></param>
         public void AddConnection(TcpClient client)
         {
             connectedClients.Add(client);
         }
-
+        /// <summary>
+        /// Sending all clients message method
+        /// </summary>
+        /// <param name="message">Message</param>
         public void TellAllClients(string message)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(message);
@@ -45,6 +58,9 @@ namespace TcpChatLibrary.Models
                 item.GetStream().Write(bytes, 0, bytes.Length);
             }
         }
+        /// <summary>
+        /// Listning connection requests method
+        /// </summary>
         public void StartListen()
         {
             while (true)
@@ -55,6 +71,10 @@ namespace TcpChatLibrary.Models
                 thread.Start(client);
             }
         }
+        /// <summary>
+        /// Reciving message method
+        /// </summary>
+        /// <param name="client">Conected client</param>
         private void ReciveMessage(object client)
         {
             if(client != null)
@@ -65,14 +85,13 @@ namespace TcpChatLibrary.Models
                     stream = tcpClient.GetStream();
                     while (true)
                     {
-                        ///
                         message = GetMessage();
                     }
                 }       
             }
         }
         /// <summary>
-        /// 
+        /// Getting message method
         /// </summary>
         /// <returns></returns>
         private string GetMessage()
@@ -85,7 +104,8 @@ namespace TcpChatLibrary.Models
                 builder.Append(Encoding.Unicode.GetString(bytes, 0, byteCount));
             }
             while (stream.DataAvailable);
-            RecivedMessageFromClient?.Invoke(this, builder.ToString());
+            string[] strs = builder.ToString().Split(':');
+            RecivedMessageFromClient?.Invoke(strs[0], strs[1]);
             return builder.ToString();
         }
     }

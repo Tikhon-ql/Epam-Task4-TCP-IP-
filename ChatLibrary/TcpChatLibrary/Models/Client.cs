@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
@@ -16,7 +17,11 @@ namespace TcpChatLibrary.Models
         public NetworkStream stream { get; private set; }
         TcpClient client;
         public string Name { get; set; }
-
+        /// <summary>
+        /// Message recived event
+        /// </summary>
+        /// <param name="sender">Sender of message</param>
+        /// <param name="message">Messgae</param>
         public delegate void MyEventHandler(object sender, string message);
         public event MyEventHandler RecivedMessageFromServer;
 
@@ -26,16 +31,19 @@ namespace TcpChatLibrary.Models
             Name = name;
             Ip = iP;
         }
-
+        /// <summary>
+        /// Connection to the server
+        /// </summary>
+        /// <param name="ip">Ip adress of server</param>
+        /// <param name="port">Port of server</param>
+        /// <returns></returns>
         public bool Connect(IPAddress ip, int port)
         {
             try
             {
                 client.Connect(ip, port);
                 Thread reciveMessageThread = new Thread(ReciveMessage);
-                Thread joiningThread = new Thread(Joining);
                 reciveMessageThread.Start();
-                joiningThread.Start();
                 return true;
             }
             catch
@@ -43,14 +51,9 @@ namespace TcpChatLibrary.Models
                 return false;
             }
         }
-        public void Joining()
-        {
-            string message = "";
-            while (true)
-            {
-                SendMessage(message);
-            }
-        }
+        /// <summary>
+        /// Reciveing messages method
+        /// </summary>
         private void ReciveMessage()
         {
             while (true)
@@ -61,19 +64,30 @@ namespace TcpChatLibrary.Models
                     byte[] bytes = new byte[1024];
                     do
                     {
-                        int byteCount = stream.Read(bytes, 0, bytes.Length);
-                        builder.Append(Encoding.Unicode.GetString(bytes, 0, byteCount));
+                        if (stream.CanRead)
+                        {
+                            int byteCount = stream.Read(bytes, 0, bytes.Length);
+                            builder.Append(Encoding.Unicode.GetString(bytes, 0, byteCount));
+                        }
                     }
                     while (stream.DataAvailable);
                     RecivedMessageFromServer?.Invoke(this, builder.ToString());
                 }
             }
         }
-        private void SendMessage(string message)
+        /// <summary>
+        /// Sending message method
+        /// </summary>
+        /// <param name="message"></param>
+        public void SendMessage(string message)
         {
-            byte[] bytes = Encoding.Unicode.GetBytes(message);
-            stream = client.GetStream();
-            stream.Write(bytes, 0, bytes.Length);
+            if(client != null && message != "")
+            {
+                message = Name + ":" + message;
+                byte[] bytes = Encoding.Unicode.GetBytes(message);
+                stream = client.GetStream();
+                stream.Write(bytes, 0, bytes.Length);
+            }
         }
     }
 }
